@@ -5,7 +5,8 @@ var gutil = require('gulp-util');
 var webpack = require('webpack');
 var path = require('path');
 var express = require('express');
-var webpackConfig = require(config.webpack.serverConfig);
+var webpackConfig = require(config.webpack.config);
+var serverConfig = require(config.webpack.serverConfig);
 var webpackMiddleware = require('webpack-dev-middleware');
 var webpackHotMiddleware = require('webpack-hot-middleware');
 var exec = require('child_process').exec;
@@ -95,18 +96,18 @@ gulp.task("clean", function(done) {
 
 gulp.task('dev-server', ['build'], function() {
 
-	var compiler = webpack(webpackConfig);
+	var compiler = webpack(serverConfig);
 	var server = express();
 
 	server.use(webpackMiddleware(compiler, {
 		noInfo: true,
-		publicPath: webpackConfig.output.publicPath
+		publicPath: serverConfig.output.publicPath
 	}));
 
 	server.use(webpackHotMiddleware(compiler));
 
 	server.get('*', function(req, res) {
-		res.sendFile(path.join(webpackConfig.output.path, 'index.html'));
+		res.sendFile(path.join(serverConfig.output.path, 'index.html'));
 	});
 
 	server.listen(config.webpack.devPort, 'localhost', function(err) {
@@ -115,6 +116,29 @@ gulp.task('dev-server', ['build'], function() {
 		}
 		gutil.log('[dev-server]', 'http://localhost:' + config.webpack.devPort);
 	});
+});
+
+gulp.task('webpack', ['build'], function() {
+  var buildConfig = Object.create(webpackConfig);
+  buildConfig.debug = true;
+  buildConfig.devtool = '#source-map';
+
+	// run webpack
+  webpack(buildConfig, function(err, stats) {
+    if(err) {
+      throw new gutil.PluginError('webpack', err);
+    }
+
+    var statsOutput =  stats.toString({
+      colors: true
+    });
+
+    if(stats.hasErrors() === true)
+    {
+      throw new gutil.PluginError('webpack', statsOutput);
+    }
+    gutil.log('[webpack]', statsOutput);
+  });
 });
 
 // gulp.task('open-browser', function() {
