@@ -1,7 +1,6 @@
 "use strict";
 
-require('bootstrap-webpack!../bootstrap.config.js');
-require("jquery");
+// require("jquery");
 
 var React = require('react');
 var ReactDOM = require('react-dom');

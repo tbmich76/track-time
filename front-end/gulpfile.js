@@ -16,125 +16,90 @@ var $ = require('gulp-load-plugins')();
 // var opn = require('opn');
 var marked = require('marked');
 var part = require('code-part');
-
-// Sources for generating `index.html`.
-  var IndexSources = [
-    './app/index.js',
-    './app/index.html',
-    './webpack.dev.config.js',
-    './gulpfile.js',
-    './app/style.less',
-    './bootstrap.config.less',
-    './bootstrap.config.js'
-  ];
-
-  // ## Helper Functions
-
-  // ### highlight
-
-  // Returns code with [google-code-prettify](https://code.google.com/p/google-code-prettify/)
-  // markup setup to use line numbers started at specified line. Used in both docco and
-  // doccoHtml to add prettify markup to the code sections of the docs.
-  var highlight = function (code, startLine) {
-    var html = '<?prettify';
-    if (_.isNumber(startLine))
-      html += ' linenums=' + startLine;
-    html += '><pre class="prettyprint">' + _.escape(code) + '</pre>'
-    return html;
-  };
-  // Setup marked to use our highlighter.
-  marked.setOptions({ highlight: highlight });
-
-  // ### docco
-
-  // [code-part](http://github.com/bline/code-part) To parse out code/docs
-  // and [marked](https://github.com/chjj/marked) to format the docs.
-  // marked is manually applied because we are using
-  // [google-code-prettify](https://code.google.com/p/google-code-prettify/)
-  // to highlight code.
-  var docco = function (path, code, config) {
-    var sections = part(path, code, config);
-    _.forEach(sections, function (section) {
-      section.codeHtml = highlight(section.codeText, section.codeLine);
-      section.docsHtml = marked(section.docsText);
-    });
-    return sections;
-  }
-
-
-
-// gulp.task('watch', ['dev-server','open-browser']);
+var runSequence = require('run-sequence');
+// var gulpreplace = require('gulp-replace');
+// var gulpif = require('gulp-if');
 
 // ### task clean
 // Cleans up dist directory using [del](https://github.com/sindresorhus/del).
-gulp.task("clean", function(done) {
-	del(["dist/*"], done);
+gulp.task("clean", function (done) {
+  return del(["dist/*"]);
 });
 
+gulp.task('copy-dependencies', function () {
 
+  gulp.src('./src/index.html')
+    .pipe(gulp.dest('./dist'));
 
- // ### task index
-  // Build's the index file with documentation from [docco](http://jashkenas.github.io/docco/)
-  // with the `index.html` [lodash template](https://lodash.com/docs#template).
-  gulp.task("build", [], function (done) {
-    var docs = [];
-    gulp.src(IndexSources)
-      .pipe($.tap(function (file) {
-        docs.push({
-          file: file,
-          docco: docco(file.path, file.contents.toString()),
-          id: _.uniqueId('file-')
-        })}))
-      // After we've created the `docs` array, build the template.
-      .on('end', function () {
-        gulp.src('./app/index.html')
-          .pipe($.template({ docs: docs }))
-          .pipe(gulp.dest('dist'))
-          .on('end', function () { done() })
-      });
+  gulp.src('./bower_components/bootstrap/dist/css/bootstrap.min.css')
+    .pipe(gulp.dest('./dist/bootstrap/css'));
+
+  gulp.src('./bower_components/bootstrap/dist/css/bootstrap.min.css.map')
+    .pipe(gulp.dest('./dist/bootstrap/css'));
+
+  gulp.src('./bower_components/bootstrap/dist/fonts/*')
+    .pipe(gulp.dest('./dist/bootstrap/fonts'));
+
+  gulp.src('./bower_components/bootstrap/dist/js/bootstrap.min.js')
+    .pipe(gulp.dest('./dist/bootstrap/js'));
+
+  gulp.src('./bower_components/jquery/dist/jquery.min.js')
+    .pipe(gulp.dest('./dist/jquery'));
+});
+
+gulp.task('build', function (done) {
+  runSequence(
+    'clean',
+    'webpack',
+    'copy-dependencies',
+    function () {
+      done();
+    });
+});
+
+gulp.task('dev-server', ['build'], function () {
+
+  var compiler = webpack(serverConfig);
+  var server = express();
+
+  server.use('/jquery', express.static(path.join(webpackConfig.output.path, 'jquery')));
+  server.use('/bootstrap', express.static(path.join(webpackConfig.output.path, 'bootstrap')));
+
+  server.use(webpackMiddleware(compiler, {
+    noInfo: true,
+    publicPath: serverConfig.output.publicPath
+  }));
+
+  server.use(webpackHotMiddleware(compiler));
+
+  server.get('*', function (req, res) {
+    res.sendFile(path.join(serverConfig.output.path, 'index.html'));
   });
 
-gulp.task('dev-server', ['build'], function() {
-
-	var compiler = webpack(serverConfig);
-	var server = express();
-
-	server.use(webpackMiddleware(compiler, {
-		noInfo: true,
-		publicPath: serverConfig.output.publicPath
-	}));
-
-	server.use(webpackHotMiddleware(compiler));
-
-	server.get('*', function(req, res) {
-		res.sendFile(path.join(serverConfig.output.path, 'index.html'));
-	});
-
-	server.listen(config.webpack.devPort, 'localhost', function(err) {
-		if (err) {
-			throw new gutil.PluginError('dev-server', err);
-		}
-		gutil.log('[dev-server]', 'http://localhost:' + config.webpack.devPort);
-	});
+  server.listen(config.webpack.devPort, 'localhost', function (err) {
+    if (err) {
+      throw new gutil.PluginError('dev-server', err);
+    }
+    gutil.log('[dev-server]', 'http://localhost:' + config.webpack.devPort);
+  });
 });
 
-gulp.task('webpack', ['build'], function() {
+gulp.task('webpack', function () {
   var buildConfig = Object.create(webpackConfig);
   buildConfig.debug = true;
   buildConfig.devtool = '#source-map';
 
-	// run webpack
-  webpack(buildConfig, function(err, stats) {
-    if(err) {
+  // run webpack
+  webpack(buildConfig, function (err, stats) {
+    if (err) {
       throw new gutil.PluginError('webpack', err);
     }
 
-    var statsOutput =  stats.toString({
+    var statsOutput = stats.toString({
       colors: true
     });
 
-    if(stats.hasErrors() === true)
-    {
+    if (stats.hasErrors() === true) {
       throw new gutil.PluginError('webpack', statsOutput);
     }
     gutil.log('[webpack]', statsOutput);
