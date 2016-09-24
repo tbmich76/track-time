@@ -1,13 +1,8 @@
-'use strict';
+import React from "react";
+import {SessionTable} from "./sessionTable";
 
-var React = require('react');
-
-var SessionTable = require('./sessionTable');
-
-var Home = React.createClass({
-    render: function() {
-        return (<SessionTable source="https://g5bgaxge4j.execute-api.ap-southeast-2.amazonaws.com/prod/sessions"/>);
-    }
-});
-
-module.exports = Home;
+export class Home extends React.Component {
+  render() {
+    return (<SessionTable source="https://g5bgaxge4j.execute-api.ap-southeast-2.amazonaws.com/prod/sessions"/>);
+  }
+}

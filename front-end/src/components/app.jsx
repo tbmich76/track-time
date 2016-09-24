@@ -1,22 +1,16 @@
-"use strict";
-import React from 'react'
-import {Link} from 'react-router'
+import React from "react";
 
-export default React.createClass({
-    render() {
-        return (
-            <div>
-                <h1>App</h1>
-                <ul>
-                    <li>
-                        <Link to="/about">About</Link>
-                    </li>
-                    <li>
-                        <Link to="/inbox">Inbox</Link>
-                    </li>
-                </ul>
-                {this.props.children}
-            </div>
-        )
-    }
-});
+export class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <header></header>
+        <main>{this.props.children}</main>
+        <footer></footer>
+      </div>
+    );
+  }
+}
+App.propTypes = {
+  children: React.PropTypes.node
+};

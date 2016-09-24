@@ -1,15 +1,13 @@
-var React = require('react');
+import React from "react";
 
-var SessionUpload = React.createClass({
-    render: function() {
-        return (
-            <div>
-                <form method="post">
-                    <input type="file"/>
-                </form>
-            </div>
-        );
-    }
-});
-
-module.exports = SessionUpload;
+export class SessionUpload extends React.Component {
+  render() {
+    return (
+      <div>
+        <form method="post">
+          <input type="file"/>
+        </form>
+      </div>
+    );
+  }
+}

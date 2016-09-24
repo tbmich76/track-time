@@ -1,6 +1,7 @@
 var config = require('./config');
 var del = require('del');
 var gulp = require('gulp');
+const eslint = require('gulp-eslint');
 var gutil = require('gulp-util');
 var open = require('gulp-open');
 var webpack = require('webpack');
@@ -14,12 +15,9 @@ var exec = require('child_process').exec;
 var os = require('os');
 var _ = require('lodash');
 var $ = require('gulp-load-plugins')();
-// var opn = require('opn');
 var marked = require('marked');
 var part = require('code-part');
 var runSequence = require('run-sequence');
-// var gulpreplace = require('gulp-replace');
-// var gulpif = require('gulp-if');
 
 // ### task clean
 // Cleans up dist directory using [del](https://github.com/sindresorhus/del).
@@ -35,15 +33,16 @@ gulp.task('copy-dependencies', function() {
 
 gulp.task('build', function(done) {
     runSequence(
+        'lint',
         'clean',
-        'webpack',
         'copy-dependencies',
+        'webpack',
         function() {
             done();
         });
 });
 
-gulp.task('webpack-dev', ['build'], function() {
+gulp.task('webpack-dev', ['clean','copy-dependencies'], function() {
 
     var compiler = webpack(serverConfig);
     var server = express();
@@ -98,4 +97,21 @@ gulp.task('open-browser', function() {
     };
     gulp.src(__filename)
         .pipe(open(options));
+});
+
+gulp.task('lint', () => {
+    // ESLint ignores files with "node_modules" paths.
+    // So, it's best to have gulp ignore the directory as well.
+    // Also, Be sure to return the stream from the task;
+    // Otherwise, the task may end before the stream has finished.
+    return gulp.src(['**/*.js','**/*.jsx','!node_modules/**','!dist/**', '!gulpfile.js', '!gulp/**', '!config.js', '!webpack.config.js', '!webpack.dev.config.js'])
+        // eslint() attaches the lint output to the "eslint" property
+        // of the file object so it can be used by other modules.
+        .pipe(eslint())
+        // eslint.format() outputs the lint results to the console.
+        // Alternatively use eslint.formatEach() (see Docs).
+        .pipe(eslint.format())
+        // To have the process exit with an error code (1) on
+        // lint error, return the stream and pipe to failAfterError last.
+        .pipe(eslint.failAfterError());
 });
