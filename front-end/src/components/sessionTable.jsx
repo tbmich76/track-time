@@ -23,14 +23,16 @@ export class SessionTable extends React.Component {
     }.bind(this));
     return (
       <div className="sessions-container">
-        <Link to="/sessionUpload">Upload a session</Link>
-        <div className="sessions-header">
-          <div className="session-cell">Session</div>
-          <div className="session-cell">Date</div>
-          <div className="session-cell">Track</div>
-          <div className="session-cell">Best Time</div>
+        <div className="session-upload">
+          <Link to="/sessionUpload">Upload a session</Link>
         </div>
-        {rows}
+        <div className="sessions-header">
+          <div className="cell">Session</div>
+          <div className="cell">Date</div>
+          <div className="cell">Track</div>
+          <div className="cell">Best Time</div>
+        </div>
+        <div className="sessions">{rows}</div>
       </div>
     );
   }
