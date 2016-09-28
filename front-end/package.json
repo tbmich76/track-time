@@ -29,6 +29,7 @@
     "react-dom": "^15.3.2",
     "react-router": "^2.8.1",
     "run-sequence": "^1.2.2",
+    "togeojson": "^0.14.2",
     "webpack": "^1.12.9",
     "webpack-dev-middleware": "^1.4.0",
     "webpack-hot-middleware": "^2.5.1",

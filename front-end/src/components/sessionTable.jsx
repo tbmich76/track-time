@@ -23,9 +23,6 @@ export class SessionTable extends React.Component {
     }.bind(this));
     return (
       <div className="sessions-container">
-        <div className="session-upload">
-          <Link to="/sessionUpload">Upload a session</Link>
-        </div>
         <div className="sessions-header">
           <div className="cell">Session</div>
           <div className="cell">Date</div>
