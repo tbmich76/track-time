@@ -1,5 +1,4 @@
 import React from "react";
-import {Link} from "react-router";
 import {Header} from "./header";
 import {Footer} from "./footer";
 import {Aside} from "./aside";
@@ -7,7 +6,7 @@ import {Aside} from "./aside";
 export class App extends React.Component {
   render() {
     return (
-      <div className="wrapper">
+      <div className="container-fluid">
         <Header/>
         <main className="main">{this.props.children}</main>
         <Aside number="1"/>

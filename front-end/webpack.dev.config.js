@@ -26,7 +26,9 @@ module.exports = {
         }, {
             test: /\.less$/,
             loader: extractTextPlugin.extract('css?sourceMap!less?sourceMap')
-        }, {
+        },
+				{ test: /\.css$/, loader: extractTextPlugin.extract("style-loader", "css-loader") },
+				{
             test: /\.json$/,
             loaders: ['json'],
             exclude: /node_modules/,
@@ -47,7 +49,8 @@ module.exports = {
         new webpack.NoErrorsPlugin(),
         new webpack.ProvidePlugin({
             $: "jquery",
-            jQuery: "jquery"
+            jQuery: "jquery",
+            jquery: 'jquery'
         })
     ]
 };

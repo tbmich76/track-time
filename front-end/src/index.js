@@ -5,6 +5,9 @@ import {App} from "./components/app";
 import {Home} from "./components/homePage";
 import {SessionUpload} from "./components/sessionUpload";
 
+import "jquery";
+import "bootstrap/dist/js/bootstrap";
+
 import "./style.less";
 
 render((

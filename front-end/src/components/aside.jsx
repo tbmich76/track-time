@@ -9,3 +9,6 @@ export class Aside extends React.Component {
     return (<aside className={this.className}></aside>);
   }
 }
+Aside.propTypes = {
+  number: React.PropTypes.string
+};

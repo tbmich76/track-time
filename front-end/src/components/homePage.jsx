@@ -5,11 +5,11 @@ import {SessionTable} from "./sessionTable";
 export class Home extends React.Component {
   render() {
     return (
-      <div className="leaderboard">
-				<div className="actions">
-					<Link to="/sessionUpload">Upload a session</Link>
-				</div>
-        <SessionTable source="https://g5bgaxge4j.execute-api.ap-southeast-2.amazonaws.com/prod/sessions"/>
+      <div className="row">
+        <div className="col-md-12">
+          <Link to="/sessionUpload">Upload a session</Link>
+          <SessionTable/>
+        </div>
       </div>
     );
   }

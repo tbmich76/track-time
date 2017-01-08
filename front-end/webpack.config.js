@@ -15,7 +15,9 @@ module.exports = {
         loaders: [{
             test: /\.less$/,
             loader: extractTextPlugin.extract('css!less')
-        }, {
+        },
+        { test: /\.css$/, loader: extractTextPlugin.extract("style-loader", "css-loader") },
+         {
             test: /\.jsx?$/,
             loaders: ['babel'],
             exclude: /node_modules/,
@@ -38,7 +40,8 @@ module.exports = {
         }),
         new webpack.ProvidePlugin({
             $: "jquery",
-            jQuery: "jquery"
+            jQuery: "jquery",
+            jquery: 'jquery'
         })
     ]
 };

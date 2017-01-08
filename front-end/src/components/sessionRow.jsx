@@ -3,14 +3,14 @@ import React from "react";
 export class SessionRow extends React.Component {
   render() {
     return (
-      <div className="session-row">
-        <div className="cell">
+      <tr>
+        <td>
           <a href="#">{this.props.session.title}</a>
-        </div>
-        <div className="cell">{this.props.session.date}</div>
-        <div className="cell">{this.props.session.track}</div>
-        <div className="cell">{this.props.session.bestTime}</div>
-      </div>
+        </td>
+        <td>{this.props.session.date}</td>
+        <td>{this.props.session.track}</td>
+        <td>{this.props.session.bestTime}</td>
+      </tr>
     );
   }
 }
