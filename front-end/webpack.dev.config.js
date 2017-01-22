@@ -19,11 +19,11 @@ module.exports = {
 
     module: {
         loaders: [
-          { test: /\.(woff|png|jpg)$/, loader: 'url-loader?limit=10000' },
+          { test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000' },
           { test: /\.jsx?$/, loader: 'babel', exclude: /node_modules/, include: path.join(__dirname, 'src') },
           { test: /\.less$/, loader: extractTextPlugin.extract('css?sourceMap!less?sourceMap') },
           { test: /\.css$/, loader: extractTextPlugin.extract("style-loader", "css-loader") },
-          { test: /\.json$/, loaders: ['json'], exclude: /node_modules/, include: path.join(__dirname, 'src')
+          { test: /\.json$/, loaders: ['json'], exclude: /node_modules/, include: path.join(__dirname, 'src') }
         ],
     },
 

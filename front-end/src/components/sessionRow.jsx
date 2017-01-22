@@ -1,11 +1,12 @@
 import React from "react";
+import {Link} from "react-router";
 
 export class SessionRow extends React.Component {
   render() {
     return (
       <tr>
         <td>
-          <a href="#">{this.props.session.title}</a>
+          <Link to={`/sessionDetails/${this.props.session.id}`}>{this.props.session.title}</Link>
         </td>
         <td>{this.props.session.date}</td>
         <td>{this.props.session.track}</td>

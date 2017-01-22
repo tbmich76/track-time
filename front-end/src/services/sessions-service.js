@@ -20,7 +20,6 @@ export class SessionsService {
   getSessions() {
     return new Promise(function(resolve, reject) {
       axios.get(this.apiUrl).then(function(result) {
-        console.log(result);
         var sessions = result.data || [];
         resolve(sessions);
       }).catch(function(error) {
@@ -30,5 +29,14 @@ export class SessionsService {
         }
       });
     }.bind(this));
+  }
+  getSession(id) {
+    return axios.get(`${this.apiUrl}/${id}`)
+    .then(function(result) {
+      return result.data
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
   }
 }
