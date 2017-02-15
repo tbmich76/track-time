@@ -11,7 +11,6 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import 'leaflet/dist/leaflet.js';
-import 'leaflet/dist/leaflet.css';
 
 import "./style.less";
 

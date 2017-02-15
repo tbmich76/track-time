@@ -27,7 +27,7 @@ gulp.task("clean", function(done) {
 });
 
 gulp.task('images', function() {
-  return gulp.src('./src/images/**/*.+(png|jpg|gif|svg)')
+  return gulp.src(['./src/images/**/*.+(png|jpg|gif|svg)','./node_modules/leaflet/dist/images/**/*.+(png|jpg|gif|svg)'])
     .pipe(imagemin())
     .pipe(gulp.dest('./dist/images'));
 });

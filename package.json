@@ -47,7 +47,8 @@
     "webpack-sources": "^0.1.2"
   },
   "dependencies": {
-    "leaflet": "^1.0.2"
+    "leaflet": "^1.0.2",
+    "plotly.js": "^1.22.0"
   },
   "author": {
     "name": "Tim Micheletto",
