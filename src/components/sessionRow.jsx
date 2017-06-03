@@ -1,20 +1,20 @@
 import React from "react";
-import {Link} from "react-router";
+import PropTypes from 'prop-types';
+import {Route, Link} from 'react-router-dom';
 
-export class SessionRow extends React.Component {
-  render() {
-    return (
-      <tr>
-        <td>
-          <Link to={`/sessionDetails/${this.props.session.id}`}>{this.props.session.title}</Link>
-        </td>
-        <td>{this.props.session.date}</td>
-        <td>{this.props.session.track}</td>
-        <td>{this.props.session.bestTime}</td>
-      </tr>
-    );
-  }
-}
+const SessionRow = ({session}) => (
+  <tr>
+    <td>
+      <Link to={`/sessionDetails/${session.id}`}>{session.title}</Link>
+    </td>
+    <td>{session.date}</td>
+    <td>{session.track}</td>
+    <td>{session.bestTime}</td>
+  </tr>
+);
+
 SessionRow.propTypes = {
-  session: React.PropTypes.shape({title: React.PropTypes.string, date: React.PropTypes.string, track: React.PropTypes.string, bestTime: React.PropTypes.string})
+  session: PropTypes.shape({title: PropTypes.string, date: PropTypes.string, track: PropTypes.string, bestTime: PropTypes.string})
 };
+
+export default SessionRow;

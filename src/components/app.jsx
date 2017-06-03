@@ -1,21 +1,14 @@
 import React from "react";
-import {Header} from "./header";
-import {Footer} from "./footer";
-import {Aside} from "./aside";
+import Header from "./header";
+import Footer from "./footer";
+import Main from "./main";
 
-export class App extends React.Component {
-  render() {
-    return (
+const App = () => (
       <div className="container-fluid">
-        <Header/>
-        <main className="main">{this.props.children}</main>
-        <Aside number="1"/>
-        <Aside number="2"/>
-        <Footer/>
+        <Header />
+        <Main />
+        <Footer />
       </div>
-    );
-  }
-}
-App.propTypes = {
-  children: React.PropTypes.node
-};
+);
+
+export default App;

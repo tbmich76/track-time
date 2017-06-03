@@ -3,7 +3,6 @@ import tj from "togeojson";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import {SessionsService} from "../services/sessions-service";
-import {browserHistory} from 'react-router';
 
 import "react-datepicker/dist/react-datepicker.css";
 
