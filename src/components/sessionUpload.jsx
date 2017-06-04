@@ -1,14 +1,16 @@
 import React from "react";
 import tj from "togeojson";
+import {browserHistory} from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import {SessionsService} from "../services/sessions-service";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-export class SessionUpload extends React.Component {
+class SessionUpload extends React.Component {
   constructor(props) {
     super(props);
+    this.handleCancel = this.handleCancel.bind(this);
     this.state = {
       title: "",
       track: "broadford",
@@ -43,7 +45,7 @@ export class SessionUpload extends React.Component {
     this.setState({date: date});
   }
   handleCancel(e) {
-    browserHistory.goBack();
+    this.props.history.push('/');
   }
   handleSubmit(e) {
     e.preventDefault();
@@ -55,42 +57,42 @@ export class SessionUpload extends React.Component {
       date: this.state.date.toDate()
     };
     this.sessionsService.createSession(session).then((result) => {
-      browserHistory.push('/');
+      this.props.history.push('/');
     }).catch((error) => {
       console.log(error);
     });
   }
   render() {
     return (
-      <div className="row">
-        <div className="col-md-8 col-md-offset-2">
-          <form onSubmit={this.handleSubmit.bind(this)}>
-            <div className="form-group">
-              <label htmlFor="title">Title</label>
-              <input id="title" className="form-control" type="text" value={this.state.title} onChange={this.handleTitleChange.bind(this)} required></input>
-            </div>
-            <div className="form-group">
-              <label htmlFor="date">Date</label>
-              <DatePicker id="date" className="form-control" selected={this.state.date} onChange={this.handleDateSelected.bind(this)}/>
-            </div>
-            <div className="form-group">
-              <label htmlFor="track">Track</label>
-              <select id="track" className="form-control" value={this.state.track} onChange={this.handleTrackSelected.bind(this)} required>
-                <option value="broadford">Broadford</option>
-                <option value="phillip island">Phillip Island</option>
-              </select>
-            </div>
-            <div className="form-group">
-              <label htmlFor="file">KML or GPX export</label>
-              <input id="file" accept=".kml,.gpx" multiple={false} type="file" onChange={this.handleFileSelected.bind(this)} required></input>
-            </div>
-          </form>
-          <div className="footer">
-            <button type="button" className="btn btn-default" onClick={this.handleCancel}>Cancel</button>
-            <button type="submit" className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Upload</button>
+      <div>
+        <form onSubmit={this.handleSubmit.bind(this)}>
+          <div className="form-group">
+            <label htmlFor="title">Title</label>
+            <input id="title" className="form-control" type="text" value={this.state.title} onChange={this.handleTitleChange.bind(this)} required></input>
           </div>
+          <div className="form-group">
+            <label htmlFor="date">Date</label>
+            <DatePicker id="date" className="form-control" selected={this.state.date} onChange={this.handleDateSelected.bind(this)}/>
+          </div>
+          <div className="form-group">
+            <label htmlFor="track">Track</label>
+            <select id="track" className="form-control" value={this.state.track} onChange={this.handleTrackSelected.bind(this)} required>
+              <option value="broadford">Broadford</option>
+              <option value="phillip island">Phillip Island</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label htmlFor="file">KML or GPX export</label>
+            <input id="file" accept=".kml,.gpx" multiple={false} type="file" onChange={this.handleFileSelected.bind(this)} required></input>
+          </div>
+        </form>
+        <div className="footer">
+          <button type="button" className="btn btn-default" onClick={this.handleCancel}>Cancel</button>
+          <button type="submit" className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Upload</button>
         </div>
       </div>
     );
   }
 }
+
+export default SessionUpload

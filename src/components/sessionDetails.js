@@ -1,32 +1,23 @@
 import React from "react";
-import {SessionsService} from "../services/sessions-service";
-import {TrackMap} from "./track-map"
+import PropTypes from 'prop-types';
+import TrackMap from "./track-map";
 
-export class SessionDetails extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      session: {},
-      loaded: false
-    };
-    this.sessionsService = new SessionsService();
-  }
-  componentDidMount() {
-    this.sessionsService.getSession(this.props.params.sessionId).then(function(data) {
-      this.setState({session: data, loaded: true});
-    }.bind(this));
-  }
-  render() {
-    return (
-      <div className="row">
-        <div className="col-md-12">
-          <h1>{this.state.session.title}</h1>
-          {!this.state.loaded
-            ? <div>Loading...</div>
-            : <TrackMap session={this.state.session}/>
-          }
-        </div>
-      </div>
-    );
-  }
-}
+const SessionDetails = ({session}) => (
+  <div>
+    <h1>{session.title}</h1>
+    <TrackMap session={session}/>
+  </div>
+);
+
+SessionDetails.propTypes = {
+  session: PropTypes.object.isRequired
+
+  // session: PropTypes.shape({
+  //   title: PropTypes.string.required,
+  //   date: PropTypes.string,
+  //   track: PropTypes.string,
+  //   bestTime: PropTypes.string,
+  //   geoData: PropTypes.object.required}.required)
+};
+
+export default SessionDetails;

@@ -26,7 +26,7 @@ class Home extends Component {
   render() {
     const { sessionSummaries, isFetching } = this.props
     return (
-        <div className="row">
+        <div>
           {!isFetching &&
             <a href='#'
                onClick={this.handleRefreshClick}>
