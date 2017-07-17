@@ -2,7 +2,8 @@ import {
   REQUEST_SESSION_SUMMARIES,
   RECEIVE_SESSION_SUMMARIES,
   RECEIVE_SESSION,
-  REQUEST_SESSION
+  REQUEST_SESSION,
+  SET_TRACK_POSITION
 } from '../actions'
 
 
@@ -58,6 +59,10 @@ const rootReducer = (state = {}, action) => {
       return {
         session: session(state.session, action)
       }
+    case SET_TRACK_POSITION:
+      return Object.assign({}, state, {
+        position: action.position || {lat: 0, lng: 0}
+      });
     default:
       return state
   }

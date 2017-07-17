@@ -1,13 +1,24 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import TrackMap from "./track-map";
+import TrackMapContainer from "../containers/track-map-container";
+import TrackSpeedContainer from "../containers/track-speed-container";
+import Dropdown from 'react-dropdown';
 
-const SessionDetails = ({session}) => (
-  <div>
-    <h1>{session.title}</h1>
-    <TrackMap session={session}/>
-  </div>
-);
+import 'react-dropdown/style.css';
+
+const SessionDetails = ({session}) => {
+  const options = session.geoData.laps.map((l) => {
+    return l.id;
+  });
+  return (
+    <div>
+      <h1>{session.title}</h1>
+      <Dropdown options={options} value={options[0]} placeholder="Select an option" />
+      <TrackSpeedContainer session={session}/>
+      { /* <TrackMapContainer session={session}/> */ }
+    </div>
+  );
+}
 
 SessionDetails.propTypes = {
   session: PropTypes.object.isRequired

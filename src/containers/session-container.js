@@ -17,7 +17,7 @@ class SessionContainer extends Component {
     return (
         <div>
           {isFetching && !session.geoData &&
-            <h2>Loading...</h2>
+            <h2>Loading session...</h2>
           }
           {session.geoData &&
             <SessionDetails session={session} />

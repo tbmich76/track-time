@@ -28,19 +28,19 @@ class Home extends Component {
     return (
         <div>
           {!isFetching &&
-            <a href='#'
-               onClick={this.handleRefreshClick}>
-              Refresh
-            </a>
+            <div>
+              <a href='#'
+                 onClick={this.handleRefreshClick}>
+                Refresh
+              </a>
+              <Link to="/sessionUpload">Upload a session</Link>
+            </div>
           }
           {isFetching && sessionSummaries.length === 0 &&
             <h2>Loading...</h2>
           }
           {sessionSummaries.length > 0 &&
-            <div className="col-md-12">
-              <Link to="/sessionUpload">Upload a session</Link>
-              <SessionTable sessionSummaries={sessionSummaries}/>
-            </div>
+            <SessionTable sessionSummaries={sessionSummaries}/>
           }
         </div>
     )

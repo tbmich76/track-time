@@ -1,11 +1,54 @@
 import React from "react";
 import tj from "togeojson";
-import {browserHistory} from 'react-router-dom';
+import parser from 'xml2js-parser';
 import DatePicker from "react-datepicker";
-import moment from "moment";
+import moment from "moment-timezone";
+import _ from 'lodash';
 import {SessionsService} from "../services/sessions-service";
 
 import "react-datepicker/dist/react-datepicker.css";
+
+const transformPoints = (data) => {
+  const points = [];
+  for (let i = 0; i < data.when.length; i++) {
+    let timestamp = data.when[i];
+    const parts = timestamp.split('-');
+    if (parts[0].length > 4) {
+      timestamp = timestamp.slice(2, timestamp.length);
+    }
+
+    const coords = data["gx:coord"][i].split(' ');
+
+    // console.log(data);
+    points.push({
+      acceleration: parseFloat(data.ExtendedData[0].SchemaData[0]["gx:SimpleArrayData"][1]["gx:value"][i]),
+      leanAngle: parseInt(data.ExtendedData[0].SchemaData[0]["gx:SimpleArrayData"][0]["gx:value"][i]),
+      speed: parseFloat(data.ExtendedData[0].SchemaData[0]["gx:SimpleArrayData"][2]["gx:value"][i]),
+      coordinates: { longitude: coords[0], latitude: coords[1] },
+      timestamp: moment.tz(timestamp, 'Australia/Sydney')
+    });
+  }
+  return points;
+}
+
+const transformSessionData = (data) => {
+  const doc = data.kml.Document[0];
+  const res = {
+    title: doc.Folder[0].name[0],
+    laps: doc.Folder[0].Folder.map((f) => {
+      return {
+        id: f.Folder[0].Placemark[0].name[0],
+        title: f.name[0],
+        location: { latitude: f.Folder[0].Placemark[0]["gx:Track"][0].Model[0].Location[0].latitude[0], longitude: f.Folder[0].Placemark[0]["gx:Track"][0].Model[0].Location[0].longitude[0] },
+        points: transformPoints(f.Folder[0].Placemark[0]["gx:Track"][0])
+      }
+    })
+  }
+  _.each(res.laps, (lap) => {
+    lap.duration = (_.last(lap.points).timestamp.diff(_.first(lap.points).timestamp)) / 1000;
+  });
+  return res;
+}
 
 class SessionUpload extends React.Component {
   constructor(props) {
@@ -31,13 +74,9 @@ class SessionUpload extends React.Component {
 
     reader.onload = function(e) {
       const contents = e.target.result;
-      const parser = new DOMParser();
-      const xmlDom = parser.parseFromString(contents, "text/xml");
-      if (file.name.endsWith(".kml")) {
-        this.setState({geoData: tj.kml(xmlDom)});
-      } else if (file.name.endsWith(".gpx")) {
-        this.setState({geoData: tj.gpx(xmlDom)});
-      }
+      const res = parser.parseStringSync(contents);
+      const data = transformSessionData(res);
+      this.setState({geoData: data});
     }.bind(this);
     reader.readAsText(file);
   }

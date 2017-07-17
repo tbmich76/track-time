@@ -11,6 +11,7 @@
     "babel-preset-react": "^6.1.18",
     "bootstrap": "^3.3.7",
     "bootstrap-webpack": "0.0.5",
+    "chartist": "^0.11.0",
     "code-part": "^1.1.1",
     "css-loader": "^0.25.0",
     "del": "^2.2.0",
@@ -28,15 +29,17 @@
     "gulp-util": "^3.0.7",
     "imports-loader": "^0.7.0",
     "jquery": "^3.1.1",
+    "json-loader": "^0.5.4",
     "less": "^2.7.1",
     "less-loader": "^2.2.2",
     "lodash": "^4.16.1",
     "marked": "^0.3.5",
-    "moment": "^2.15.1",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
+    "react-chartist": "^0.13.0",
     "react-datepicker": "^0.46.0",
     "react-dom": "^15.5.4",
+    "react-dropdown": "^1.2.5",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.1",
     "redux": "^3.6.0",
@@ -44,7 +47,6 @@
     "redux-thunk": "^2.2.0",
     "run-sequence": "^1.2.2",
     "style-loader": "^0.13.1",
-    "togeojson": "^0.14.2",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.2",
     "webpack-dev-middleware": "^1.8.3",
@@ -52,8 +54,9 @@
     "webpack-sources": "^0.1.2"
   },
   "dependencies": {
-    "leaflet": "^1.0.2",
-    "plotly.js": "^1.22.0"
+    "mapbox-gl": "^0.37.0",
+    "moment-timezone": "^0.5.13",
+    "xml2js-parser": "^1.1.1"
   },
   "author": {
     "name": "Tim Micheletto",

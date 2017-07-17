@@ -4,6 +4,7 @@ export const REQUEST_SESSION = 'REQUEST_SESSION'
 export const RECEIVE_SESSION = 'RECEIVE_SESSION'
 export const REQUEST_SESSION_SUMMARIES = 'REQUEST_SESSION_SUMMARIES'
 export const RECEIVE_SESSION_SUMMARIES = 'RECEIVE_SESSION_SUMMARIES'
+export const SET_TRACK_POSITION = 'SET_TRACK_POSITION'
 
 const sessionsService = new SessionsService();
 
@@ -50,13 +51,6 @@ export const fetchSessionIfNeeded = (sessionId) => {
   }
 }
 
-// export const setTrackPosition = (position) => {
-//   return {
-//     type: 'SET_TRACK_POSITION',
-//     position
-//   }
-// }
-
 function requestSessionSummaries() {
   return {
     type: REQUEST_SESSION_SUMMARIES
@@ -95,5 +89,19 @@ export const fetchSessionSummariesIfNeeded = () => {
     if (shouldFetchSessionSummaries(getState())) {
       return dispatch(fetchSessionSummaries())
     }
+  }
+}
+
+export const setTrackPosition = (position) => {
+  return {
+    type: SET_TRACK_POSITION,
+    position: position
+  }
+}
+
+export const setLap = (lap) => {
+  return {
+    type: SET_LAP,
+    lap: lap
   }
 }

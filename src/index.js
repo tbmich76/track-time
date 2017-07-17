@@ -9,8 +9,6 @@ import "jquery";
 import "bootstrap/dist/js/bootstrap.min.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import 'leaflet/dist/leaflet.js';
-
 import "./style.less";
 
 const loggerMiddleware = createLogger()

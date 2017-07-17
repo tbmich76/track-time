@@ -23,7 +23,7 @@ module.exports = {
           { test: /\.jsx?$/, loader: 'babel', exclude: /node_modules/, include: path.join(__dirname, 'src') },
           { test: /\.less$/, loader: extractTextPlugin.extract('css?sourceMap!less?sourceMap') },
           { test: /\.css$/, loader: extractTextPlugin.extract("style-loader", "css-loader") },
-          { test: /\.json$/, loaders: ['json'], exclude: /node_modules/, include: path.join(__dirname, 'src') }
+          { test: /\.json$/, loaders: ['json'] }
         ],
     },
 
